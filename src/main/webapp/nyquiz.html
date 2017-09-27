@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ny quiz</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <div class="page-header">
+        <h1>Lag en ny quiz</h1>
+    </div>
+
+    <form id="myForm" class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-sm-4" for="navn">Navn: </label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" id="navn" placeholder="Navn" name="navn">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-4" for="dato">Dato: </label>
+            <div class="col-sm-8">
+                <input type="date" class="form-control" id="dato" name="dato">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-4" for="starttid">Starttidspunkt: </label>
+            <div class="col-sm-8">
+                <input type="time" class="form-control" id="starttid" name="starttid">
+            </div>
+        </div>
+
+        <br>
+        Dobbelklikk på et svar for å indikere at det er korrekt.
+        <br>
+        En quiz har for øyeblikket kun 5 spørsmål, og hvert spørsmål har 4 svar.
+        <br>
+
+        <table id="nySpmTab" class="table table-bordered">
+            <tbody>
+                <tr>
+                    <td>
+                        <h3>Spørsmål 1</h3>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="sporsmal0">Spørsmål: </label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="sporsmal0" placeholder="Hei" name="sporsmal[]">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="tid0">Tid i sekunder: </label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="tid0" name="tid">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="bilde0">Bilde-url (valgfri): </label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="bilde0" name="bilde">
+                            </div>
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4" for="svar01">Svar: </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="svar01" name="svar[]">
+                                    </div>
+                                </div>
+
+                            </li>
+                            <li class="list-group-item">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4" for="svar02">Svar: </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="svar02" name="svar[]">
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4" for="svar03">Svar: </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="svar03" name="svar[]">
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4" for="svar04">Svar: </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="svar04" name="svar[]">
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td>
+                        <h3>Spørsmål 2</h3>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="sporsmal1">Spørsmål: </label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="sporsmal1" placeholder="Hei" name="sporsmal[]">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="tid1">Tid i sekunder: </label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="tid1" name="tid">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="bilde1">Bilde-url (valgfri): </label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="bilde1" name="bilde">
+                            </div>
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4" for="svar11">Svar: </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="svar11" name="svar[]">
+                                    </div>
+                                </div>
+
+                            </li>
+                            <li class="list-group-item">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4" for="svar12">Svar: </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="svar12" name="svar[]">
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4" for="svar13">Svar: </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="svar13" name="svar[]">
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4" for="svar14">Svar: </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="svar14" name="svar[]">
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td>
+                        <h3>Spørsmål 3</h3>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="sporsmal2">Spørsmål: </label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="sporsmal2" placeholder="Hei" name="sporsmal[]">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="tid0">Tid i sekunder: </label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="tid2" name="tid">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="bilde0">Bilde-url (valgfri): </label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="bilde2" name="bilde">
+                            </div>
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4" for="svar21">Svar: </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="svar21" name="svar[]">
+                                    </div>
+                                </div>
+
+                            </li>
+                            <li class="list-group-item">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4" for="svar22">Svar: </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="svar22" name="svar[]">
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4" for="svar23">Svar: </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="svar23" name="svar[]">
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4" for="svar24">Svar: </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="svar24" name="svar[]">
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td>
+                        <h3>Spørsmål 4</h3>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="sporsmal3">Spørsmål: </label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="sporsmal3" placeholder="Hei" name="sporsmal[]">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="tid3">Tid i sekunder: </label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="tid3" name="tid">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="bilde3">Bilde-url (valgfri): </label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="bilde3" name="bilde">
+                            </div>
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4" for="svar31">Svar: </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="svar31" name="svar[]">
+                                    </div>
+                                </div>
+
+                            </li>
+                            <li class="list-group-item">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4" for="svar32">Svar: </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="svar32" name="svar[]">
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4" for="svar33">Svar: </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="svar33" name="svar[]">
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4" for="svar34">Svar: </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="svar34" name="svar[]">
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td>
+                        <h3>Spørsmål 5</h3>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="sporsmal4">Spørsmål: </label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="sporsmal4" placeholder="Hei" name="sporsmal[]">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="tid4">Tid i sekunder: </label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="tid4" name="tid">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="bilde4">Bilde-url (valgfri): </label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="bilde4" name="bilde">
+                            </div>
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4" for="svar41">Svar: </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="svar41" name="svar[]">
+                                    </div>
+                                </div>
+
+                            </li>
+                            <li class="list-group-item">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4" for="svar42">Svar: </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="svar42" name="svar[]">
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4" for="svar43">Svar: </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="svar43" name="svar[]">
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4" for="svar44">Svar: </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="svar44" name="svar[]">
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <button id="tilbake" class="btn btn-default">Tilbake</button>
+        <button id="ferdig" type="sumbit" class="btn btn-default">Ferdig!</button>
+    </form>
+
+
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/lagnyquiz.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+</body>
+</html>

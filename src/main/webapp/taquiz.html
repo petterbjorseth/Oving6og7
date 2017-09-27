@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ta quiz!</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="http://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var urlString = window.location.href;
+            var url = new URL(urlString);
+            var navn = url.searchParams.get("navn");
+            var nick = url.searchParams.get("nick");
+            var spmCounter = -1;
+            var avgittSvar = null;
+            var score = 0;
+            var harStartet = false;
+            var urlen = 'rest/services/' + navn;
+
+            $('#scoreboard').DataTable({
+                "paging": false,
+                "searching": false,
+                "info": false,
+                "order": [[1, "desc"]],
+                columns: [
+                    {data: 'kallenavn'},
+                    {data: 'score'}
+                ]
+            });
+
+            $('#nick').html("Ditt kallenavn: " + nick);
+
+            function startsToday(date){
+                var idag = new Date();
+                return (date.getFullYear() === idag.getFullYear() && date.getMonth() === idag.getMonth() && date.getDate() === idag.getDate());
+            }
+
+            function removeSelect(){
+                var id;
+                for(var i = 0; i < 4; i++){
+                    id = '#alt' + i;
+                    $(id).attr("style", "background-color: white;");
+                }
+            }
+
+            function updateScore(){
+                $.ajax({
+                    url: urlen + '/scoreboard',
+                    type: 'PUT',
+                    dataType: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify({
+                        nick: nick,
+                        score: score
+                    }),
+                    success: function (data) {
+                        loadScoreboard();
+                    }
+                });
+            }
+
+            function ferdig(){
+                $('#container').html('<table id="scoreboardferdig" class="table table-striped table-bordered"> <thead> <tr> <th>Kallenavn</th> <th>Poeng</th> </tr> </thead> </table>');
+                $('#scoreboardferdig').DataTable({
+                    "paging": false,
+                    "searching": false,
+                    "info": false,
+                    "order": [[1, "desc"]],
+                    columns: [
+                        {data: 'kallenavn'},
+                        {data: 'score'}
+                    ]
+                });
+                var tab = $('#scoreboardferdig').DataTable();
+                $.ajax({
+                    url: urlen + '/scoreboard',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        for (var i = 0; i < data.length; i++) {
+                            tab.row.add({
+                                "kallenavn": data[i]['nick'],
+                                "score": data[i]['score']
+                            }).draw();
+                            //$('#scoreboard').append('<tr><td>' + data[i]['nick'] + '</td><td>' + data[i]['score'] + '</td></tr>')
+                        }
+                    }
+                });
+            }
+
+            $('#altliste').on('click', 'li', function (e) {
+                removeSelect();
+                avgittSvar = e.currentTarget;
+                e.currentTarget.setAttribute("style", "background-color: #4cae4c;");
+            });
+
+            $('#tilbake').click(function () {
+                window.location.href = "index.html";
+            });
+
+            function kjor() {
+                var containerString = $('#container').html();
+                removeSelect();
+                if(spmCounter >= 5){
+                    ferdig();
+                    return;
+                }
+                $.ajax({
+                    url: urlen,
+                    type: 'GET',
+                    dataType: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        if (spmCounter === -1) {
+                            var dato = new Date(data['dato']);
+                            var startTid = data['startTid'];
+                            var tim = startTid[0] + startTid[1];
+                            var minutter = startTid[3] + startTid[4];
+                            dato.setHours(tim, minutter);
+                            if (!startsToday(dato)) {
+                                $('#spm').html("Denne quizen starter ikke idag");
+                                return;
+                            }
+                            var x = setInterval(function () {
+                                var nu = new Date().getTime();
+                                var starter = dato.getTime();
+                                var differanse = starter - nu;
+                                
+                                if (differanse <= 0) {
+                                    harStartet = true;
+                                    clearInterval(x);
+                                    spmCounter++;
+                                    kjor();
+                                }
+                            }, 1000);
+
+                        }
+
+                        if (harStartet) {
+                            var sporsmal = data['sporsmal'][spmCounter++];
+                            $('#spm').html(sporsmal['sporsmal']);
+                            $('#bilde').attr("src", sporsmal['bildeURL']);
+                            var svar = sporsmal['svar'];
+                            var id;
+                            for (var i = 0; i < svar.length; i++) {
+                                id = '#alt' + i;
+                                $(id).html(svar[i]['svar']);
+                                $(id).attr("data-riktig", svar[i]['riktig']);
+                            }
+                            var tidIgjen = sporsmal['tid'];
+                            var timer = setInterval(function () {
+                                $('#nedtelling').html("Tid igjen: " + --tidIgjen);
+                                if (tidIgjen <= 0) {
+                                    clearInterval(timer);
+                                    if(avgittSvar !== null) {
+                                        if (avgittSvar.getAttribute("data-riktig") === "true") {
+                                            $('#korrekt').html("Korrekt!");
+                                            updateScore();
+                                            score++;
+                                        } else {
+                                            $('#korrekt').html("Det var desverre feil...");
+                                        }
+                                    }else{
+                                        $('#korrekt').html("Husk å svare!");
+                                    }
+                                    avgittSvar = null;
+                                    setTimeout(function () {
+                                        kjor();
+                                    }, 2000);
+                                }
+                            }, 1000);
+                        }
+                    }
+                });
+            }
+
+            $.ajax({
+                url: urlen,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    $('#tittel').html(data['navn']);
+                    var dato = data['dato'];
+                    var starttid = data['startTid'];
+                    $('#subtittel').html("Dato: " + dato.toString() + ", starter: " + starttid);
+
+                }
+            });
+
+            $.ajax({
+                url: urlen,
+                type: 'PUT',
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({
+                    nick: nick,
+                    score: 0
+                }),
+                success: function (data) {
+                    loadScoreboard();
+                }
+            });
+
+            function loadScoreboard() {
+                var tab = $('#scoreboard').DataTable();
+                tab.clear();
+                $.ajax({
+                    url: urlen + '/scoreboard',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        for (var i = 0; i < data.length; i++) {
+                            tab.row.add({
+                                "kallenavn": data[i]['nick'],
+                                "score": data[i]['score']
+                            }).draw();
+                        }
+                    }
+                });
+            }
+
+            kjor();
+        });
+    </script>
+</head>
+<body>
+    <div id="nick"></div>
+    <div class="page-header">
+        <h1 id="tittel"></h1>
+    </div>
+    <h4 id="subtittel"></h4>
+
+    <div id="container">
+        <div class="panel panel-default">
+            <div id="spm" class="panel-heading"></div>
+            <div class="panel-body">
+                <img id="bilde" src="">
+                <p id="nedtelling"></p>
+            </div>
+
+            <ul id="altliste" class="list-group">
+                <li id="alt0" class="list-group-item" data-riktig="false"></li>
+                <li id="alt1" class="list-group-item" data-riktig="false"></li>
+                <li id="alt2" class="list-group-item" data-riktig="false"></li>
+                <li id="alt3" class="list-group-item" data-riktig="false"></li>
+            </ul>
+        </div>
+        <p id="korrekt"></p>
+        <br>
+        <table id="scoreboard" class="table table-striped table-bordered">
+            <thead>
+            <tr>
+                <th>Kallenavn</th>
+                <th>Poeng</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+    <button id="tilbake" class="btn btn-default">Tilbake</button>
+
+    <script src="js/bootstrap.min.js"></script>
+</body>
+</html>

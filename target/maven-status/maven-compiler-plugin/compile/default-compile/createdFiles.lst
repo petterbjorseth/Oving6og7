@@ -1,0 +1,6 @@
+services\Scoreboard.class
+services\Sporsmal.class
+services\UserScore.class
+services\Quiz.class
+services\Quizer.class
+services\Svar.class

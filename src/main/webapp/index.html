@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="styleforside.css">
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="http://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            $('#tab').DataTable({
+                "paging": false,
+                "order": [[1, "desc"]],
+                ajax: {
+                    url: 'rest/services',
+                    dataSrc: ''
+                },
+                columns: [
+                    {data: 'navn'},
+                    {data: 'dato'},
+                    {data: 'startTid'}
+                ]
+            });
+
+            $('#nyquiz').click(function () {
+                window.location.href = "nyquiz.html";
+            });
+
+            $('#scoreboard').DataTable({
+                "paging": false,
+                "searching": false,
+                "info": false,
+                "order": [[1, "desc"]],
+                columns: [
+                    {data: 'kallenavn'},
+                    {data: 'score'}
+                ]
+            });
+
+            $('#tab').on('dblclick', 'tr', function (e) {
+                var element = e.currentTarget.children[0].textContent;
+                var nick = prompt("Skriv inn ett kallenavn: ");
+                window.location.href = "taquiz.html?navn=" + element + "&nick=" + nick;
+            })
+
+            $('#tab').on('click', 'tr', function (e) {
+                var element = e.currentTarget.children[0].textContent;
+                $('#scoreboard').DataTable().clear();
+                $.ajax({
+                    url: 'rest/services/' + element + '/scoreboard',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        $('#scorenavn').html("Viser scoreboard for: " + element);
+                        //put in sort function
+                        for (var i = 0; i < data.length; i++) {
+                            $('#scoreboard').DataTable().row.add({
+                                "kallenavn": data[i]['nick'],
+                                "score": data[i]['score']
+                            }).draw();
+                        }
+                    }
+                });
+            })
+        });
+    </script>
+</head>
+<body>
+    <div class="page-header">
+        <h1>Quiz</h1>
+    </div>
+    <div>
+        <button id="nyquiz" type="button" class="btn btn-default">Ny Quiz</button>
+    </div>
+    <br>
+    Trykk en gang på en quiz for å få opp scoreboardet, trykk to ganger for å bli med.
+    <table id="tab" class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Navn</th>
+                <th>Dato</th>
+                <th>Starttid</th>
+            </tr>
+        </thead>
+    </table>
+    <br>
+    <h3 id="scorenavn"></h3>
+    <table id="scoreboard" class="table table-striped table-bordered">
+        <thead>
+        <tr>
+            <th>Kallenavn</th>
+            <th>Poeng</th>
+        </tr>
+        </thead>
+    </table>
+
+
+    <script src="js/bootstrap.min.js"></script>
+</body>
+</html>
